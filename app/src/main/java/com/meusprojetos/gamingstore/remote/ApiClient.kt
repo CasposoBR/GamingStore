@@ -1,4 +1,4 @@
-package com.meusprojetos.gamingstore
+package com.meusprojetos.gamingstore.remote
 
 import io.ktor.client.plugins.auth.*
 import io.ktor.client.HttpClient
