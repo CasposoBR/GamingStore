@@ -22,6 +22,10 @@ android {
         }
     }
 
+    buildFeatures {
+        compose = true // 🔹 Habilita o Jetpack Compose!
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -70,6 +74,14 @@ dependencies {
 
     implementation(libs.kotlinx.serialization.json)
 
+    //jetpack compose
+    implementation(libs.ui)
+    implementation(libs.material3)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.coil.compose)
+
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -79,6 +91,10 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.play.services.auth)
+    implementation(libs.androidx.ui.test.android)
+    implementation(libs.androidx.foundation.layout.android)
+    implementation(libs.androidx.foundation.layout.android)
+    implementation(libs.androidx.foundation.layout.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

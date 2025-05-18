@@ -15,15 +15,24 @@ import kotlinx.serialization.json.Json
 data class Product(
     val id: String,
     val name: String,
-    val price: Double
+    val description: String,
+    val imageUri: String,
+    val price: Double,
+    val stock: Int,
+    val isOnPromotion: Boolean,
+    val promotionPrice: Double?,
+    val brand: String,
+    val available: Boolean
 )
 
 object ApiClient {
+    private var accessToken: String? = null  // 🔹 Guarda o token JWT obtido
+
     private val client = HttpClient {
         install(Auth) {
             bearer {
                 loadTokens {
-                    BearerTokens("SEU_TOKEN_JWT_AQUI", "SEU_REFRESH_TOKEN_AQUI")
+                    accessToken?.let { BearerTokens(it, "") } ?: BearerTokens("", "")
                 }
             }
         }
@@ -36,8 +45,7 @@ object ApiClient {
 
     suspend fun getProducts(): List<Product> {
         return try {
-            client.get("$BASE_URL/products")
-                .body() //
+            client.get("$BASE_URL/products").body<List<Product>>()  // 🔹 Corrigido!
         } catch (e: Exception) {
             println("Erro ao buscar produtos: ${e.localizedMessage}")
             emptyList()

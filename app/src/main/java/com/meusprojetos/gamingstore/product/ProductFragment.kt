@@ -1,20 +1,44 @@
 package com.meusprojetos.gamingstore.product
 
-import android.os.Bundle
-import android.view.View
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import com.meusprojetos.gamingstore.R
-import com.meusprojetos.gamingstore.remote.ApiClient
-import kotlinx.coroutines.launch
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.meusprojetos.gamingstore.viewmodel.ProductViewModel
 
-class ProductFragment : Fragment(R.layout.fragment_product) {
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+@Composable
+fun ProductFragment(productViewModel: ProductViewModel = viewModel()) {
+    val products by productViewModel.products.collectAsState()
+    val isLoading by productViewModel.loadingState.collectAsState()
+    val errorMessage by productViewModel.errorState.collectAsState()
 
-        lifecycleScope.launch {
-            val products = ApiClient.getProducts()
-            println("Produtos recebidos: $products") // 🔹 Exibe os produtos no log
+    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+        Text("Produtos", style = MaterialTheme.typography.headlineMedium)
+
+        if (isLoading) {
+            CircularProgressIndicator()  // 🔹 Mostra carregamento
+        } else if (errorMessage != null) {
+            Text(errorMessage!!, color = MaterialTheme.colorScheme.error)  // 🔹 Mostra erro
+        } else {
+            LazyColumn {
+                items(products) { product ->
+                    ProductCard(
+                        product = product,
+                        onClick = { /* Ação ao clicar */ },
+                        onToggleFavorite = { /* Alternar favorito */ }
+                    )
+                }
+            }
         }
     }
 }
