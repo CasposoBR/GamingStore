@@ -16,7 +16,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
 object ApiService {
-    private var accessToken: String? = null  // 🔹 Armazena o token JWT
+    private var accessToken: String? = null  //
 
     private val client = HttpClient {
         install(Auth) {
@@ -34,7 +34,7 @@ object ApiService {
     private const val BASE_URL = "http://10.0.2.2:8080"
 
     fun setAccessToken(token: String) {
-        accessToken = token  // 🔹 Agora o token é armazenado globalmente
+        accessToken = token  //
     }
 
     suspend fun getSessionState(userId: String): String {

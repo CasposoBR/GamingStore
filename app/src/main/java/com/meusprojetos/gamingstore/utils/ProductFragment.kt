@@ -1,4 +1,4 @@
-package com.meusprojetos.gamingstore.product
+package com.meusprojetos.gamingstore.utils
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

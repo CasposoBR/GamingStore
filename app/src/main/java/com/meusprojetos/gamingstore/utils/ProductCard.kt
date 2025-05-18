@@ -1,15 +1,20 @@
-package com.meusprojetos.gamingstore.product
+package com.meusprojetos.gamingstore.utils
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -32,9 +37,10 @@ import androidx.compose.material3.IconButton
 
 @Composable
 fun ProductCard(
-    product: Product,  // 🔹 Agora usando o modelo do Ktor
+    product: Product,
     onClick: () -> Unit,
-    onToggleFavorite: (Product) -> Unit
+    onToggleFavorite: (Product) -> Unit,
+    onAddToCart: (Product) -> Unit
 ) {
     ElevatedCard(
         modifier = Modifier
@@ -51,7 +57,7 @@ fun ProductCard(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 AsyncImage(
-                    model = product.imageUri,  //
+                    model = product.imageUri,
                     contentDescription = product.name,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -73,7 +79,7 @@ fun ProductCard(
                 )
 
                 Text(
-                    text = "R$ ${product.price}",  //
+                    text = "R$ ${product.price}",
                     fontWeight = FontWeight.Bold,
                     fontSize = 14.sp,
                     color = MaterialTheme.colorScheme.primary,
@@ -81,17 +87,25 @@ fun ProductCard(
                 )
             }
 
-            IconButton(
-                onClick = { onToggleFavorite(product) },
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(4.dp)
+            Row(
+                modifier = Modifier.align(Alignment.TopEnd).padding(4.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Icon(
-                    imageVector = if (product.isOnPromotion) Icons.Filled.Star else Icons.Outlined.Star,
-                    contentDescription = "Favoritar",
-                    tint = if (product.isOnPromotion) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onSurface
-                )
+                IconButton(onClick = { onToggleFavorite(product) }) {
+                    Icon(
+                        imageVector = if (product.isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                        contentDescription = "Favoritar",
+                        tint = if (product.isFavorite) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onSurface
+                    )
+                }
+
+                IconButton(onClick = { onAddToCart(product) }) {
+                    Icon(
+                        imageVector = Icons.Filled.ShoppingCart,
+                        contentDescription = "Adicionar ao Carrinho",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
             }
         }
     }

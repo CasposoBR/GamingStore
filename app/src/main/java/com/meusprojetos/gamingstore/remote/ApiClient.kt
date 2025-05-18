@@ -19,6 +19,7 @@ data class Product(
     val imageUri: String,
     val price: Double,
     val stock: Int,
+    var isFavorite: Boolean = false,
     val isOnPromotion: Boolean,
     val promotionPrice: Double?,
     val brand: String,
@@ -26,7 +27,7 @@ data class Product(
 )
 
 object ApiClient {
-    private var accessToken: String? = null  // 🔹 Guarda o token JWT obtido
+    private var accessToken: String? = null
 
     private val client = HttpClient {
         install(Auth) {
@@ -45,7 +46,7 @@ object ApiClient {
 
     suspend fun getProducts(): List<Product> {
         return try {
-            client.get("$BASE_URL/products").body<List<Product>>()  // 🔹 Corrigido!
+            client.get("$BASE_URL/products").body<List<Product>>()
         } catch (e: Exception) {
             println("Erro ao buscar produtos: ${e.localizedMessage}")
             emptyList()
