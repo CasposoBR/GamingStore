@@ -37,9 +37,15 @@ object ApiService {
         accessToken = token  //
     }
 
-    suspend fun getSessionState(userId: String): String {
-        val response = client.get("$BASE_URL/app/session?userId=$userId").body<Map<String, Any>>()
-        return response["screen"] as String
+    suspend fun getSessionState(userId: String): String? {
+        return try {
+            val response = client.get("$BASE_URL/app/session?userId=$userId")
+                .body<Map<String, Any>>()
+            response["screen"] as? String
+        } catch (e: Exception) {
+            println("Erro ao buscar sessão: ${e.localizedMessage}")
+            null
+        }
     }
 
     suspend fun getAllProducts(): List<Product> {

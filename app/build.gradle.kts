@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.meusprojetos.gamingstore"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.meusprojetos.gamingstore"

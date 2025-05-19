@@ -14,10 +14,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.meusprojetos.gamingstore.viewmodel.CartViewModel
 import com.meusprojetos.gamingstore.viewmodel.ProductViewModel
 
 @Composable
-fun ProductFragment(productViewModel: ProductViewModel = viewModel()) {
+fun ProductFragment(
+    productViewModel: ProductViewModel = viewModel(),
+    cartViewModel: CartViewModel = viewModel()
+) {
+
     val products by productViewModel.products.collectAsState()
     val isLoading by productViewModel.loadingState.collectAsState()
     val errorMessage by productViewModel.errorState.collectAsState()
@@ -26,16 +31,17 @@ fun ProductFragment(productViewModel: ProductViewModel = viewModel()) {
         Text("Produtos", style = MaterialTheme.typography.headlineMedium)
 
         if (isLoading) {
-            CircularProgressIndicator()  // 🔹 Mostra carregamento
+            CircularProgressIndicator()
         } else if (errorMessage != null) {
-            Text(errorMessage!!, color = MaterialTheme.colorScheme.error)  // 🔹 Mostra erro
+            Text(errorMessage!!, color = MaterialTheme.colorScheme.error)
         } else {
             LazyColumn {
                 items(products) { product ->
                     ProductCard(
                         product = product,
                         onClick = { /* Ação ao clicar */ },
-                        onToggleFavorite = { /* Alternar favorito */ }
+                        onToggleFavorite = { /* Alternar favorito */ },
+                        onAddToCart = { cartViewModel.addToCart(it) }
                     )
                 }
             }

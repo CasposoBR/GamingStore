@@ -19,7 +19,7 @@ fun AppNavigation(navController: NavHostController) {
     var screenState by remember { mutableStateOf("login") }
 
     LaunchedEffect(Unit) {
-        screenState = ApiService.getSessionState("123")  // 🔹 Ktor decide a navegação
+        screenState = ApiService.getSessionState("123") ?: "login"  // 🔹 Garante que nunca será nulo
     }
 
     NavHost(navController, startDestination = screenState) {

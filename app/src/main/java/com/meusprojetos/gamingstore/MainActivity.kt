@@ -16,7 +16,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
-            AppNavigation(navController)  // 🔹 Conecta a navegação ao app
+            AppNavigation(navController)
         }
     }
 }
